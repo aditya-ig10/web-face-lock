@@ -1,10 +1,17 @@
 What are the basic things which you should must have before trying this project:
+
 pip install thread
+
 pip install opencv-python
+
 pip install face_recognition
+
 pip install dlib
+
 pip install flask
+
 pip install cmake
+
 
 > python 3.7 and above
 
