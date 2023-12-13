@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h2> </h2>
+    <div class="loader3">
+            <div class="bars bar1"></div>
+            <div class="bars bar2"></div>
+            <div class="bars bar3"></div>
+            <div class="bars bar4"></div>
+            <div class="bars bar5"></div>
+            <div class="bars bar6"></div>
+            <div class="bars bar7"></div>
+            <div class="bars bar8"></div>
+            <div class="bars bar9"></div>
+            <div class="bars bar10"></div>
+        </div>
+        <form onsubmit="return login()">
+            <div class="input-group">
+                <label class="label">Admin Mail:</label>
+                <input autocomplete="off" name="Email" id="Email" class="input" type="email">
+                <div></div>
+            </div>
+            <div class="input-group">
+                <label class="label">Password:</label>
+                <input autocomplete="off" name="Password" id="Password" class="input" type="password">
+                <div></div>
+            </div>
+            <div></div>
+            <button class="primary-button" type="submit"><span>Login</span></button>
+            <button id="special-button" onclick="redirectSpecial()">Try the Facial Recognition</button>
+        </form>
+        <script src="script.js"></script>
+    </body>
+    </html>

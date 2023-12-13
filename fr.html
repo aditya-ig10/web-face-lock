@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rethink+Sans:wght@500&display=swap" rel="stylesheet">
+    <title>Face Detection</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            margin-bottom: 6px;
+            margin-top: 18px;
+        }
+
+        h2 {
+            margin-top: 6px;
+            font-size: 12px;
+            margin-bottom: 22px;
+            color: #525252;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-top: 25px;
+            cursor: pointer;
+        }
+
+        .spinner {
+            width: 126px;
+            height: 126px;
+            margin-bottom: 18px;
+            display: grid;
+            border: 7.5px solid #0000;
+            border-radius: 50%;
+            border-color: #dbdcef #0000;
+            animation: spinner-e04l1k 1s infinite linear;
+          }
+          
+          .spinner::before,
+          .spinner::after {
+            content: "";
+            grid-area: 1/1;
+            margin: 2.2px;
+            border: inherit;
+            border-radius: 50%;
+          }
+          
+          .spinner::before {
+            border-color: #474bff #0000;
+            animation: inherit;
+            animation-duration: 0.5s;
+            animation-direction: reverse;
+          }
+          
+          .spinner::after {
+            margin: 8.9px;
+          }
+          
+          @keyframes spinner-e04l1k {
+            100% {
+              transform: rotate(1turn);
+            }
+          }
+          
+          .fancy {
+            background-color: transparent;
+            border: 2px solid #000;
+            border-radius: 0;
+            box-sizing: border-box;
+            color: #fff;
+            cursor: pointer;
+            display: inline-block;
+            float: none;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            margin: 0;
+            outline: none;
+            overflow: visible;
+            padding: 1.25em 2em;
+            position: relative;
+            text-align: center;
+            text-decoration: none;
+            text-transform: none;
+            transition: all 0.3s ease-in-out;
+            user-select: none;
+            font-size: 13px;
+           }
+           
+           .fancy::before {
+            content: " ";
+            width: 1.5625rem;
+            height: 2px;
+            background: black;
+            top: 50%;
+            left: 1.5em;
+            position: absolute;
+            transform: translateY(-50%);
+            transform-origin: center;
+            transition: background 0.3s linear, width 0.3s linear;
+           }
+           
+           .fancy .text {
+            font-size: 1.125em;
+            line-height: 1.33333em;
+            padding-left: 2em;
+            display: block;
+            text-align: left;
+            transition: all 0.3s ease-in-out;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: black;
+           }
+           
+           .fancy .top-key {
+            height: 2px;
+            width: 1.5625rem;
+            top: -2px;
+            left: 0.625rem;
+            position: absolute;
+            background: #e8e8e8;
+            transition: width 0.5s ease-out, left 0.3s ease-out;
+           }
+           
+           .fancy .bottom-key-1 {
+            height: 2px;
+            width: 1.5625rem;
+            right: 1.875rem;
+            bottom: -2px;
+            position: absolute;
+            background: #e8e8e8;
+            transition: width 0.5s ease-out, right 0.3s ease-out;
+           }
+           
+           .fancy .bottom-key-2 {
+            height: 2px;
+            width: 0.625rem;
+            right: 0.625rem;
+            bottom: -2px;
+            position: absolute;
+            background: #e8e8e8;
+            transition: width 0.5s ease-out, right 0.3s ease-out;
+           }
+           
+           .fancy:hover {
+            color: white;
+            background: black;
+           }
+           
+           .fancy:hover::before {
+            width: 0.9375rem;
+            background: white;
+           }
+           
+           .fancy:hover .text {
+            color: white;
+            padding-left: 1.5em;
+           }
+           
+           .fancy:hover .top-key {
+            left: -2px;
+            width: 0px;
+           }
+           
+           .fancy:hover .bottom-key-1,
+            .fancy:hover .bottom-key-2 {
+            right: 0;
+            width: 0;
+           }
+           
+           #stopwatch {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            margin-top: 22px;
+            margin-right: 28px;
+            font-size: 24px;
+            font-family: 'Rethink Sans', sans-serif;
+            color: #D8D8D8;
+        }
+    </style>
+</head>
+<body>
+    <div class="spinner"></div>
+    <h1>Waiting for face detection confirmation!</h1>
+    <h2>This generally takes 30-40 seconds to properly verify your identity.</h2>
+    <div id="stopwatch">0:00</div>
+    <button onclick="executePython()" class="fancy" href="#">
+        <span class="top-key"></span>
+        <span class="text">Click here to Identify!</span>
+        <span class="bottom-key-1"></span>
+        <span class="bottom-key-2"></span>
+    </button>
+    <script>
+        function executePython() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/execute-python', true);
+            xhr.send();
+
+            // Start the stopwatch
+            startStopwatch();
+        }
+
+        function startStopwatch() {
+            var startTime = Date.now();
+            var stopwatchElement = document.getElementById('stopwatch');
+
+            function updateStopwatch() {
+                var elapsedTime = Date.now() - startTime;
+                var seconds = Math.floor(elapsedTime / 1000);
+                var minutes = Math.floor(seconds / 60);
+                var minutesColor = (minutes !== 0) ? 'color: #D8D8D8 !important;' : '';
+                var secondsColor = (seconds % 60 !== 0) ? 'color: blue !important;' : '';
+
+                var formattedTime = '<span style="' + minutesColor + '">' + minutes + '</span>:' +
+                                    '<span style="' + secondsColor + '">' + padNumber(seconds % 60) + '</span>';
+                
+                stopwatchElement.innerHTML = formattedTime;
+            }
+
+            function padNumber(number) {
+                return (number < 10) ? '0' + number : number;
+            }
+
+            setInterval(updateStopwatch, 1000);
+        }
+    </script>
+</body>
+</html>
